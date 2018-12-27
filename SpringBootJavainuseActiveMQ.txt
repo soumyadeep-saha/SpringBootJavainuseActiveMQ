@@ -1,0 +1,122 @@
+SpringBootJavainuseActiveMQ
+
+JMS is a messaging standard that allows Java EE applications to create, send, receive, and consume messages in a loosely coupled, reliable, and asynchronous way.Its a messaging system that implements the JMS interfaces and provides administrative and control features. It is an API that provides the facility to create, send and read messages.It provides loosely coupled, reliable and asynchronous communication. In this example we use ActiveMQ to explain messaging service.
+
+Download ActiveMQ from http://activemq.apache.org/download.html. Extract it. In the bin folder click on activemq.bat and start ActiveMQ as follows and goto http://localhost:8161/admin/queues.jsp, we will see all no queues on this page.
+Basic Tutorial https://www.javainuse.com/java/ActiveMQTutorial
+
+In a previous ActiveMQ post had created a ActiveMQ Hello World Application using core java. But as can be seen in that post it involved a lot of boiler plate code. With Spring boot no boilerplate or configuration code is required.
+
+Download ActiveMQ from http://activemq.apache.org/download.html. Extract it. In the bin folder click on activemq.bat and start ActiveMQ as follows.
+Goto http://localhost:8161/admin/queues.jsp, we will see no queues on this page.
+http://localhost:8161/admin/queues.jsp
+admin/admin 
+
+Add
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-activemq</artifactId>
+</dependency>
+		
+Add below in main
+	JmsTemplate jms = ctx.getBean(JmsTemplate.class);
+	jms.convertAndSend("javainuse", "test message");
+
+Add in application.properties
+spring.activemq.broker-url=tcp://localhost:61616
+
+Go to http://localhost:8161 and a new queue named javainuse will be created.
+
+
+
+  
+
+ 
+
+
+ 
+Spring Boot + ActiveMQ Hello world Example
+In this post we create a spring boot application and integrate it with ActiveMQ. In a previous ActiveMQ post had created a ActiveMQ Hello World Application using core java. But as can be seen in that post it involved a lot of boiler plate code. With Spring boot no boilerplate or configuration code is required. 
+
+
+Lets Begin-
+
+Download ActiveMQ from http://activemq.apache.org/download.html. Extract it. In the bin folder click on activemq.bat and start ActiveMQ as follows.
+
+and goto http://localhost:8161/admin/queues.jsp, we will see no queues on this page.
+
+ 
+We will now begin with the spring boot code-
+
+In the Maven we only need the spring-boot-starter-activemq dependency.Maven will be as follows-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.test</groupId>
+	<artifactId>SpringBoot-JMS-HelloWorld</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>SpringBootHelloWorld</name>
+	<description>Demo project for Spring Boot</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.4.1.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-activemq</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>
+	
+
+ 
+Create the SpringBootHelloWorldApplication.java as follows. Using JMSTemplate we have added the new queue named 'javainuse'. So unlike the previous post of creating activemq connection, no boilerplate code for adding session and all is required.
+package com.javainuse;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.jms.core.JmsTemplate;
+
+@SpringBootApplication
+public class SpringBootHelloWorldApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext ctx = SpringApplication.run(
+				SpringBootHelloWorldApplication.class, args);
+		
+		JmsTemplate jms = ctx.getBean(JmsTemplate.class);
+		jms.convertAndSend("javainuse", "test message");
+	}
+}
+
+Create the application.properties as follows-
+spring.activemq.broker-url=tcp://localhost:61616
+
+This is the only code required. Now start the ActiveMQ. Start the spring boot application by running the SpringBootHelloWorldApplication as a java application. Go to http://localhost:8161 and a new queue named javainuse will be created.
+Download Source Code
+Download it -
+Spring Boot + ActiveMQ Hello world Example
+	
